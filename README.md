@@ -14,29 +14,33 @@ Este projeto é uma API de autenticação desenvolvida com NestJS, utilizando JW
 
 - Node.js (versão 16 ou superior)
 - PostgreSQL instalado e rodando
-- npm ou yarn
+- npm ou yarnk
 
 ## 🔧 Instalação
 
 1. Clone o repositório:
+
 ```bash
 git clone [URL_DO_REPOSITÓRIO]
 cd nestjs-auth
 ```
 
 2. Instale as dependências:
+
 ```bash
 npm install
 ```
 
 3. Configure as variáveis de ambiente:
-Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+   Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+
 ```env
 DATABASE_URL="postgresql://seu_usuario:sua_senha@localhost:5432/nestjs_auth"
 JWT_SECRET="seu_secret_jwt"
 ```
 
 4. Execute as migrações do Prisma:
+
 ```bash
 npx prisma migrate dev
 ```
@@ -44,11 +48,13 @@ npx prisma migrate dev
 ## 🏃‍♂️ Executando o Projeto
 
 Para desenvolvimento:
+
 ```bash
 npm run start:dev
 ```
 
 Para produção:
+
 ```bash
 npm run build
 npm run start:prod
@@ -57,6 +63,7 @@ npm run start:prod
 ## 📝 Endpoints da API
 
 ### Autenticação
+
 - `POST /auth/register` - Registro de novo usuário
 - `POST /auth/login` - Login de usuário existente
 - `GET /auth/profile` - Obter perfil do usuário (requer autenticação)
@@ -64,11 +71,13 @@ npm run start:prod
 ## 🧪 Testes
 
 Para executar os testes:
+
 ```bash
 npm run test
 ```
 
 Para executar os testes com cobertura:
+
 ```bash
 npm run test:cov
 ```
@@ -94,3 +103,175 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - NestJS Team
 - Prisma Team
 - Comunidade Open Source
+
+## 📝 Regras de Negócio de Autenticação
+
+### 1. Tipos de Usuários
+
+- **Cliente**: Usuário final que faz pedidos
+- **Restaurante**: Estabelecimento que oferece produtos
+- **Entregador**: Responsável pela entrega dos pedidos
+- **Administrador**: Gerencia o sistema
+
+### 2. Fluxo de Autenticação
+
+- **Registro**:
+
+  - Validação de e-mail único
+  - Validação de CPF/CNPJ único
+  - Senha com requisitos mínimos (8 caracteres, maiúscula, minúscula, número)
+  - Verificação de e-mail obrigatória
+  - Validação de dados pessoais (nome, telefone, endereço)
+
+- **Login**:
+
+  - Múltiplos métodos (e-mail/senha, telefone, redes sociais)
+  - 2FA (Autenticação de dois fatores) opcional
+  - Limite de tentativas de login (5 tentativas em 15 minutos)
+  - Bloqueio temporário após exceder tentativas
+
+- **Recuperação de Senha**:
+  - Link de recuperação válido por 1 hora
+  - Notificação por e-mail e SMS
+  - Validação de token único
+
+### 3. Segurança
+
+- Tokens JWT com expiração de 24 horas
+- Refresh tokens com expiração de 7 dias
+- Rotação automática de tokens
+- Logout em todos os dispositivos
+- Registro de atividades suspeitas
+- Criptografia de dados sensíveis
+
+### 4. Perfis e Permissões
+
+- **Cliente**:
+
+  - Visualizar restaurantes
+  - Fazer pedidos
+  - Avaliar pedidos
+  - Gerenciar endereços
+
+- **Restaurante**:
+
+  - Gerenciar cardápio
+  - Visualizar pedidos
+  - Atualizar status de pedidos
+  - Gerenciar funcionários
+
+- **Entregador**:
+
+  - Visualizar pedidos disponíveis
+  - Aceitar/rejeitar entregas
+  - Atualizar status de entrega
+  - Visualizar histórico
+
+- **Administrador**:
+  - Gerenciar todos os usuários
+  - Aprovar cadastros
+  - Visualizar relatórios
+  - Configurar sistema
+
+### 5. Validações e Restrições
+
+- Validação de idade mínima (18 anos)
+- Verificação de documentos
+- Restrição por localização
+- Validação de horário de funcionamento
+- Verificação de status da conta
+
+### 6. Notificações
+
+- E-mail de boas-vindas
+- Confirmação de cadastro
+- Alertas de segurança
+- Notificações de atividade
+- Lembretes de senha
+
+## 📋 Checklist de Implementação
+
+### 1. Tipos de Usuários
+
+- [ ] Cliente
+- [ ] Restaurante
+- [ ] Entregador
+- [ ] Administrador
+
+### 2. Fluxo de Autenticação
+
+#### Registro
+
+- [ ] Validação de e-mail único
+- [ ] Validação de CPF/CNPJ único
+- [ ] Senha com requisitos mínimos
+- [ ] Verificação de e-mail obrigatória
+- [ ] Validação de dados pessoais
+
+#### Login
+
+- [ ] Múltiplos métodos de login
+- [ ] 2FA (Autenticação de dois fatores)
+- [ ] Limite de tentativas de login
+- [ ] Bloqueio temporário
+
+#### Recuperação de Senha
+
+- [ ] Link de recuperação
+- [ ] Notificação por e-mail e SMS
+- [ ] Validação de token único
+
+### 3. Segurança
+
+- [ ] Tokens JWT
+- [ ] Refresh tokens
+- [ ] Rotação automática de tokens
+- [ ] Logout em todos os dispositivos
+- [ ] Registro de atividades suspeitas
+- [ ] Criptografia de dados sensíveis
+
+### 4. Perfis e Permissões
+
+#### Cliente
+
+- [ ] Visualizar restaurantes
+- [ ] Fazer pedidos
+- [ ] Avaliar pedidos
+- [ ] Gerenciar endereços
+
+#### Restaurante
+
+- [ ] Gerenciar cardápio
+- [ ] Visualizar pedidos
+- [ ] Atualizar status de pedidos
+- [ ] Gerenciar funcionários
+
+#### Entregador
+
+- [ ] Visualizar pedidos disponíveis
+- [ ] Aceitar/rejeitar entregas
+- [ ] Atualizar status de entrega
+- [ ] Visualizar histórico
+
+#### Administrador
+
+- [ ] Gerenciar todos os usuários
+- [ ] Aprovar cadastros
+- [ ] Visualizar relatórios
+- [ ] Configurar sistema
+
+### 5. Validações e Restrições
+
+- [ ] Validação de idade mínima
+- [ ] Verificação de documentos
+- [ ] Restrição por localização
+- [ ] Validação de horário de funcionamento
+- [ ] Verificação de status da conta
+
+### 6. Notificações
+
+- [ ] E-mail de boas-vindas
+- [ ] Confirmação de cadastro
+- [ ] Alertas de segurança
+- [ ] Notificações de atividade
+- [ ] Lembretes de senha
