@@ -1,0 +1,42 @@
+// auth-service/prisma/schema.prisma
+
+enum Role {
+  CLIENT
+  DELIVERY_DRIVER
+  RESTAURANT
+  ADMIN 
+}
+
+model User {
+  id           String          @id @default(uuid())
+  name         String
+  email        String          @unique
+  password     String
+  role         Role            @default(CLIENT)
+  isActive     Boolean         @default(false) // Usuário inicia INATIVO
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  delivery     DeliveryDriver? // Opcional (para DELIVERY_DRIVER)
+  restaurant   Restaurant?     // Opcional (para RESTAURANT)
+  admin        Admin?          // Opcional (para ADMIN)
+}
+
+model DeliveryDriver {
+  id           String  @id @default(uuid())
+  vehicleType  String
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id])
+}
+
+model Restaurant {
+  id           String  @id @default(uuid())
+  cuisineType  String
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id])
+}
+
+model Admin {
+  id           String  @id @default(uuid())
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id])
+}
