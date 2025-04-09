@@ -10,10 +10,12 @@ enum Role {
 model User {
   id           String          @id @default(uuid())
   name         String
-  email        String          @unique
+  email        String          @unique 
   password     String
   role         Role            @default(CLIENT)
-  isActive     Boolean         @default(false) // Usuário inicia INATIVO
+  isActive     Boolean         @default(false) // Usuário  INATIVO para compras
+  clubActive   Boolean         @default(false) // Usuário  INATIVO para ofertas do clube
+
   createdAt    DateTime        @default(now())
   updatedAt    DateTime        @updatedAt
   delivery     DeliveryDriver? // Opcional (para DELIVERY_DRIVER)
