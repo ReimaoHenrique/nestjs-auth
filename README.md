@@ -21,7 +21,6 @@ Este projeto é uma API de autenticação desenvolvida com NestJS, utilizando JW
 1. Clone o repositório:
 
 ```bash
-git clone [URL_DO_REPOSITÓRIO]
 cd nestjs-auth
 ```
 
