@@ -1,44 +1,80 @@
-// auth-service/prisma/schema.prisma
+// ==============================
+// Datasource: Configuração do Banco de Dados
+// ==============================
+
+datasource db {
+  provider = "postgresql" // Define o banco como PostgreSQL
+  url      = env("DATABASE_URL") // URL de conexão fornecida via variável de ambiente
+}
+
+// ==============================
+// Generator: Geração do Prisma Client
+// ==============================
+
+generator client {
+  provider = "prisma-client-js" // Gera o Prisma Client para integração com Node.js
+}
+
+// ==============================
+// Enum: Definição de Papéis do Usuário
+// ==============================
 
 enum Role {
-  CLIENT
-  DELIVERY_DRIVER
-  RESTAURANT
-  ADMIN 
+  CLIENT           // Cliente comum
+  DELIVERY_DRIVER  // Entregador
+  RESTAURANT       // Restaurante
+  ADMIN            // Administrador do sistema
 }
+
+// ==============================
+// Model: Usuário
+// ==============================
 
 model User {
-  id           String          @id @default(uuid())
-  name         String
-  email        String          @unique 
-  password     String
-  role         Role            @default(CLIENT)
-  isActive     Boolean         @default(false) // Usuário  INATIVO para compras
-  clubActive   Boolean         @default(false) // Usuário  INATIVO para ofertas do clube
+  id           String          @id @default(uuid()) // ID único gerado automaticamente
+  name         String                               // Nome do usuário
+  email        String          @unique              // E-mail único para autenticação
+  password     String                               // Senha (deve ser armazenada com hash)
+  role         Role            @default(CLIENT)     // Papel do usuário no sistema
+  isActive     Boolean         @default(false)      // Ativo para compras
+  clubActive   Boolean         @default(false)      // Ativo para promoções do clube
 
-  createdAt    DateTime        @default(now())
-  updatedAt    DateTime        @updatedAt
-  delivery     DeliveryDriver? // Opcional (para DELIVERY_DRIVER)
-  restaurant   Restaurant?     // Opcional (para RESTAURANT)
-  admin        Admin?          // Opcional (para ADMIN)
+  createdAt    DateTime        @default(now())       // Data de criação
+  updatedAt    DateTime        @updatedAt            // Data de última atualização
+
+  delivery     DeliveryDriver? // Relacionamento opcional para entregador
+  restaurant   Restaurant?     // Relacionamento opcional para restaurante
+  admin        Admin?          // Relacionamento opcional para administrador
 }
+
+// ==============================
+// Model: Entregador
+// ==============================
 
 model DeliveryDriver {
-  id           String  @id @default(uuid())
-  vehicleType  String
-  userId       String  @unique
-  user         User    @relation(fields: [userId], references: [id])
+  id           String  @id @default(uuid())         // ID único
+  vehicleType  String                               // Tipo de veículo utilizado
+  userId       String  @unique                      // FK para User (único)
+  user         User    @relation(fields: [userId], references: [id]) // Relacionamento com User
 }
+
+// ==============================
+// Model: Restaurante
+// ==============================
 
 model Restaurant {
-  id           String  @id @default(uuid())
-  cuisineType  String
-  userId       String  @unique
-  user         User    @relation(fields: [userId], references: [id])
+  id           String  @id @default(uuid())         // ID único
+  cuisineType  String                               // Tipo de cozinha
+  userId       String  @unique                      // FK para User (único)
+  user         User    @relation(fields: [userId], references: [id]) // Relacionamento com User
 }
 
+// ==============================
+// Model: Administrador
+// ==============================
+
 model Admin {
-  id           String  @id @default(uuid())
-  userId       String  @unique
-  user         User    @relation(fields: [userId], references: [id])
+  id           String  @id @default(uuid())         // ID único
+  userId       String  @unique                      // FK para User (único)
+  user         User    @relation(fields: [userId], references: [id]) // Relacionamento com User
 }
