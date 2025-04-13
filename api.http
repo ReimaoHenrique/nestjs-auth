@@ -9,11 +9,23 @@ Content-Type: application/json
 }
 
 ### 
-
+GET http://localhost:3000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSGVucmlxdWUiLCJlbWFpbCI6ImhlbnJxdWVAZXhhbXBsZS5jb20iLCJpYXQiOjE3NDQ1MTE5ODUsImV4cCI6MTc0NDUxNTU4NX0.rz7UIEp6rMO5XGiOwjJWfCe6o9tc-p7MSsw-yC3Zxwc
+### 
 POST http://localhost:3000/auth/Login
 Content-Type: application/json
 
 {
     "email": "henrque@example.com",
     "password": "password"
+}
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+{
+    "name": "Rebis",
+    "email": "rebis@example.com", 
+    "password": "password32",
+    "role": "USER"
 }
